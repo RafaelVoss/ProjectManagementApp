@@ -12,7 +12,7 @@ export default function ProjectsSidebar({addProject, selectProject, projects}) {
           return (
             <li key={index} className="flex items-center justify-between py-2">
               <button onClick={() => selectProject(index)} className="text-left w-full text-stone-200 hover:text-stone-100">
-                {project}
+                {project.title}
               </button>
             </li>
           );

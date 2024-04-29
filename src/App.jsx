@@ -6,22 +6,30 @@ import { useState, useRef } from 'react';
 
 function App() {
   const [projects, setProjects] = useState([]);
-  const [addingProject, setAddingProject] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
+  // const [projects, setProjects] = useState([{title: "Project 1", description: "Description 1", dueDate: "2021-10-01", tasks: ["Task 1", "Task 2"]}, {title: "Project 2", description: "Description 2", dueDate: "2021-10-02", tasks: ["Task 3", "Task 4"]}]);
+  const [isAddingProject, setIsAddingProject] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(-1);
 
   function handleAddProject(projectName) {
     setProjects([...projects, projectName]);
-    setAddingProject(false);
+    setIsAddingProject(false);
   }
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <ProjectsSidebar addProject={setAddingProject} selectProject={setSelectedProject} projects={projects}/>
-      {(!projects.length && selectedProject) ? 
-        <Project name="Project 1"/> : 
-        (!addingProject && <p>No projects yet or no project selected.</p>)
+      <ProjectsSidebar addProject={setIsAddingProject} selectProject={setSelectedProject} projects={projects}/>
+      {(isAddingProject) ? 
+        <NewProject addNewProject={handleAddProject}/> : 
+        (selectedProject >= 0 ? 
+          <Project project={projects[selectedProject]}/> : 
+          <p>Please create a Project{projects.length ? " or select an existing one.": "."}</p>
+        )
       }
-      {(addingProject) ? <NewProject addNewProject={handleAddProject}/> : null}
+      <div>
+        <p>isAddingProject: {isAddingProject? "true" : "false"}</p>
+        <p>selectedProject: {selectedProject}</p>
+        <p>selectedProject grater than 0: {selectedProject >= 0 ? "true": "false"}</p>
+      </div>
     </main>
   );
 }

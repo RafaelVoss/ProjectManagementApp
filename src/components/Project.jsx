@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-export default function Project({name}) {
+export default function Project({project}) {
     const [tasks, setTasks] = useState([]);
     const NewTask = useRef();
 
@@ -15,7 +15,7 @@ export default function Project({name}) {
 
     return (
         <section id="project">
-            <h2>Project Name</h2>
+            <h2>Project {project.title}</h2>
             <p>
                 <input ref={NewTask} type="text" placeholder="Create a Task"/>
                 <button onClick={addTask}>Add Task</button>
