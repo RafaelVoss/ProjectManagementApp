@@ -2,11 +2,10 @@ import ProjectsSidebar from './components/ProjectsSidebar.jsx';
 import Project from './components/Project.jsx';
 import NewProject from './components/NewProject.jsx';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 function App() {
   const [projects, setProjects] = useState([]);
-  // const [projects, setProjects] = useState([{title: "Project 1", description: "Description 1", dueDate: "2021-10-01", tasks: ["Task 1", "Task 2"]}, {title: "Project 2", description: "Description 2", dueDate: "2021-10-02", tasks: ["Task 3", "Task 4"]}]);
   const [isAddingProject, setIsAddingProject] = useState(false);
   const [selectedProject, setSelectedProject] = useState(-1);
 
@@ -15,13 +14,23 @@ function App() {
     setIsAddingProject(false);
   }
 
+  function handleAddTask(newTask) {
+    projects[selectedProject].tasks.push(newTask);
+    setProjects(projects);
+  }
+
+  function handleRemoveTask(index) {
+    projects[selectedProject].tasks.splice(index, 1);
+    setProjects(projects);
+  }
+
   return (
     <main className="h-screen my-8 flex gap-8">
       <ProjectsSidebar addProject={setIsAddingProject} selectProject={setSelectedProject} projects={projects}/>
       {(isAddingProject) ? 
         <NewProject addNewProject={handleAddProject}/> : 
         (selectedProject >= 0 ? 
-          <Project project={projects[selectedProject]}/> : 
+          <Project project={projects[selectedProject]} handleAddTask={handleAddTask} handleRemoveTask={handleRemoveTask}/> : 
           <p>Please create a Project{projects.length ? " or select an existing one.": "."}</p>
         )
       }

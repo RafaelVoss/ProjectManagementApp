@@ -1,16 +1,15 @@
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 
-export default function Project({project}) {
-    const [tasks, setTasks] = useState([]);
+export default function Project({project, handleAddTask, handleRemoveTask}) {
     const NewTask = useRef();
 
     function addTask() {
-        setTasks([...tasks, NewTask.current.value]);
+        handleAddTask(NewTask.current.value);
         NewTask.current.value = '';
     }
 
     function removeTask(index) {
-        setTasks(tasks.filter(task => task !== tasks[index]));
+        handleRemoveTask(index);
     }
 
     return (
@@ -21,7 +20,7 @@ export default function Project({project}) {
                 <button onClick={addTask}>Add Task</button>
             </p>
             <ul>
-                {tasks.map((task, index) => {
+                {project.tasks.map((task, index) => {
                     return <li key={index}>{task} <button onClick={() => removeTask(index)}>Clear</button></li>
                 })}
             </ul>
